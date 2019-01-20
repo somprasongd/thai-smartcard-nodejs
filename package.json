@@ -1,0 +1,23 @@
+{
+  "name": "node-smc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index",
+    "dev": "nodemon src/index"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.8.0",
+    "hex64": "^0.4.0",
+    "legacy-encoding": "^3.0.0",
+    "pcsclite": "^0.6.0",
+    "smartcard": "^1.0.29"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
