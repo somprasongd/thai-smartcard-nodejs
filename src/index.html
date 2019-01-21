@@ -10,16 +10,23 @@
 </head>
 
 <body>
+  <h1>SMC</h1>
+  <p id='data'></p>
   <script>
-    var socket = io.connect('http://localhost:9898');
+    var socket = io.connect('http://raspberrypi:9898');
+    const dataEl = document.getElementById('data');
+    console.log(dataEl)
     socket.on('smc-data', function (data) {
       console.log(data);
+      dataEl.innerHTML = JSON.stringify(data)
     });
     socket.on('smc-error', function (data) {
       console.log(data);
+      dataEl.innerHTML = data
     });
     socket.on('smc-removed', function (data) {
       console.log(data);
+      dataEl.innerHTML = data
     });
   </script>
 </body>
