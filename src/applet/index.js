@@ -3,5 +3,5 @@ const NhsoApplet = require('./nhso-applet');
 
 module.exports = {
   PersonalApplet,
-  NhsoApplet
-}
+  NhsoApplet,
+};

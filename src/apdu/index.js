@@ -1,4 +1,4 @@
 const apduPerson = require('./person');
 const apduNhso = require('./nhso');
 
-module.exports = { apduPerson, apduNhso }
+module.exports = { apduPerson, apduNhso };

@@ -1,14 +1,19 @@
 const smartcard = require('smartcard');
+
 const CommandApdu = smartcard.CommandApdu;
 const legacy = require('legacy-encoding');
 
 exports.getData = async (card, command, req = [0x00, 0xc0, 0x00, 0x00]) => {
-  let data = await card.issueCommand((new CommandApdu({
-    bytes: command
-  })));
-  data = await card.issueCommand((new CommandApdu({
-    bytes: [...req, ...command.slice(-1)]
-  })));
+  let data = await card.issueCommand(
+    new CommandApdu({
+      bytes: command,
+    })
+  );
+  data = await card.issueCommand(
+    new CommandApdu({
+      bytes: [...req, ...command.slice(-1)],
+    })
+  );
 
   return data;
-}
+};

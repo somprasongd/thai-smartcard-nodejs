@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index",
-    "dev": "nodemon src/index"
+    "start": "node ./src/index",
+    "dev": "nodemon ./src/index"
   },
   "keywords": [],
   "author": "",
@@ -14,10 +14,14 @@
     "dayjs": "^1.8.0",
     "hex64": "^0.4.0",
     "legacy-encoding": "^3.0.0",
+    "node-hid": "^0.7.6",
     "pcsclite": "^0.6.0",
     "smartcard": "^1.0.29"
   },
   "devDependencies": {
+    "eslint": "^5.12.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "nodemon": "^1.18.9"
   }
 }
