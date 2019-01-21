@@ -1,5 +1,5 @@
 {
-  "name": "node-smc",
+  "name": "thai-smartcard-nodejs",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,9 +13,7 @@
   "dependencies": {
     "dayjs": "^1.8.0",
     "express": "^4.16.4",
-    "hex64": "^0.4.0",
     "legacy-encoding": "^3.0.0",
-    "pcsclite": "^0.6.0",
     "smartcard": "^1.0.29",
     "socket.io": "^2.2.0"
   },

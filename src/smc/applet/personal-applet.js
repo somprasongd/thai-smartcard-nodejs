@@ -1,12 +1,9 @@
-const smartcard = require('smartcard');
+const { CommandApdu } = require('smartcard');
 const legacy = require('legacy-encoding');
 const dayjs = require('dayjs');
-const hex64 = require('hex64');
-const reader = require('../helper/reader');
+const reader = require('../../helper/reader');
 const { apduPerson } = require('../apdu');
-const converter = require('../helper/converter');
-
-const CommandApdu = smartcard.CommandApdu;
+const converter = require('../../helper/converter');
 
 class PersonalApplet {
   constructor(card, req = [0x00, 0xc0, 0x00, 0x00]) {
@@ -50,6 +47,8 @@ class PersonalApplet {
       }, ''),
     };
 
+    info.name = th;
+
     // EN fullname
     data = await reader.getData(this.card, apduPerson.CMD_ENFULLNAME, this.req);
     data = legacy.decode(data, 'tis620');
@@ -71,7 +70,7 @@ class PersonalApplet {
       }, ''),
     };
 
-    info.name = { th, en };
+    info.nameEN = en;
 
     // DOB
     data = await reader.getData(this.card, apduPerson.CMD_BIRTH, this.req);
@@ -80,12 +79,14 @@ class PersonalApplet {
       .toString()
       .trim();
     info.dob = dayjs(`${+data.slice(0, 4) - 543}-${data.slice(4, 6)}-${data.slice(6)}`).format();
+
     // Gender
     data = await reader.getData(this.card, apduPerson.CMD_GENDER, this.req);
     info.gender = data
       .slice(0, -2)
       .toString()
       .trim();
+
     // Card Issuer
     data = await reader.getData(this.card, apduPerson.CMD_ISSUER, this.req);
     info.issuer = legacy
@@ -93,6 +94,7 @@ class PersonalApplet {
       .slice(0, -2)
       .toString()
       .trim();
+
     // Issue Date
     data = await reader.getData(this.card, apduPerson.CMD_ISSUE, this.req);
     data = data
@@ -100,6 +102,7 @@ class PersonalApplet {
       .toString()
       .trim();
     info.issueDate = dayjs(`${+data.slice(0, 4) - 543}-${data.slice(4, 6)}-${data.slice(6)}`).format();
+
     // Expire Date
     data = await reader.getData(this.card, apduPerson.CMD_EXPIRE, this.req);
     data = data

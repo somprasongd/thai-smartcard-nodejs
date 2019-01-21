@@ -18,8 +18,8 @@
     socket.on('connect', function () {
       console.log('connect')
 
-      socket.emit('init', {
-        query: ['cid']
+      socket.emit('set-query', {
+        query: ['cid', 'name']
       });
 
       // socket.on('message', function (msg) {

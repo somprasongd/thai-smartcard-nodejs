@@ -1,11 +1,8 @@
-const smartcard = require('smartcard');
+const { CommandApdu } = require('smartcard');
 const legacy = require('legacy-encoding');
 const dayjs = require('dayjs');
-const hex64 = require('hex64');
-const reader = require('../helper/reader');
+const reader = require('../../helper/reader');
 const { apduNhso } = require('../apdu');
-
-const CommandApdu = smartcard.CommandApdu;
 
 class NhsoApplet {
   constructor(card, req = [0x00, 0xc0, 0x00, 0x00]) {
@@ -24,23 +21,23 @@ class NhsoApplet {
       )
     );
 
-    // main rights
-    let data = await reader.getData(this.card, apduNhso.CMD_MAINRIGHTS, this.req);
-    info.mainRights = legacy
+    // maininscl
+    let data = await reader.getData(this.card, apduNhso.CMD_MAININSCL, this.req);
+    info.maininscl = legacy
       .decode(data, 'tis620')
       .slice(0, -2)
       .toString()
       .trim();
 
-    // sub rights
-    data = await reader.getData(this.card, apduNhso.CMD_SUBRIGHTS, this.req);
-    info.subRights = legacy
+    // subinscl
+    data = await reader.getData(this.card, apduNhso.CMD_SUBINSCL, this.req);
+    info.subinscl = legacy
       .decode(data, 'tis620')
       .slice(0, -2)
       .toString()
       .trim();
 
-    // main hospital name
+    // hmain name
     data = await reader.getData(this.card, apduNhso.CMD_MAIN_HOSPITAL_NAME, this.req);
     info.mainHospitalName = legacy
       .decode(data, 'tis620')
