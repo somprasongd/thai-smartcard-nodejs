@@ -12,15 +12,14 @@
   "license": "ISC",
   "dependencies": {
     "dayjs": "^1.8.0",
+    "express": "^4.16.4",
     "hex64": "^0.4.0",
     "legacy-encoding": "^3.0.0",
     "pcsclite": "^0.6.0",
-    "smartcard": "^1.0.29"
+    "smartcard": "^1.0.29",
+    "socket.io": "^2.2.0"
   },
   "devDependencies": {
-    "eslint": "^5.12.1",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0",
     "nodemon": "^1.18.9"
   }
 }

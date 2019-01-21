@@ -4,6 +4,8 @@ const { PersonalApplet, NhsoApplet } = require('./applet');
 const Devices = smartcard.Devices;
 const devices = new Devices();
 
+const PORT = process.env.SMC_AGENT_PORT || 9898;
+
 devices.on('device-activated', event => {
   const currentDevices = event.devices;
   const device = event.device;
@@ -36,16 +38,40 @@ devices.on('device-activated', event => {
       const nhso = await nhsoApplet.getInfo();
       const info = { ...personal, nhso };
       console.log(info);
+      io.emit('smc-data', info);
     } catch (ex) {
       console.log('error');
       console.error(ex);
+      io.emit('smc-error', ex.message);
     }
   });
   device.on('card-removed', event => {
-    console.log(`Card removed from '${event.name}' `);
+    console.log(`Card removed from '${event.name}'`);
+    io.emit('smc-removed', `Card removed from '${event.name}'`);
   });
 });
 
 devices.on('device-deactivated', event => {
   console.log(`Device '${event.device}' deactivated, devices: [${event.devices}]`);
+});
+
+const app = require('express')();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
+app.get('/', function (req, res) {
+  res.sendFile(__dirname + '/index.html');
+});
+
+io.on('connection', function(socket){
+  console.log('client connected');
+  socket.emit('greet', 'OK');
+  socket.on('disconnect', function(){
+    console.log('client disconnected');
+  });
+});
+
+
+server.listen(PORT, function(){
+  console.log(`listening on *:${PORT}`);
 });
