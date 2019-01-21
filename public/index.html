@@ -13,9 +13,22 @@
   <h1>SMC</h1>
   <p id='data'></p>
   <script>
-    var socket = io.connect('http://raspberrypi:9898');
+    var socket = io.connect('http://localhost:9898');
     const dataEl = document.getElementById('data');
-    console.log(dataEl)
+    socket.on('connect', function () {
+      console.log('connect')
+
+      socket.emit('init', {
+        query: ['cid']
+      });
+
+      // socket.on('message', function (msg) {
+      //   console.log(msg)
+      // });
+    });
+    socket.on('greet', function (data) {
+      console.log(data);
+    });
     socket.on('smc-data', function (data) {
       console.log(data);
       dataEl.innerHTML = JSON.stringify(data)
