@@ -12,7 +12,7 @@ smc.init(io);
 
 if (app.env !== 'production') {
   app.get('/', function (req, res) {
-    res.sendFile(path.join(publicDir, 'index.html'));
+    res.sendFile(path.join(publicDir, 'example.html'));
   });
 }
 

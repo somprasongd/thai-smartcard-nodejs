@@ -35,11 +35,11 @@
     });
     socket.on('smc-error', function (data) {
       console.log(data);
-      dataEl.innerHTML = data
+      dataEl.innerHTML = JSON.stringify(data)
     });
     socket.on('smc-removed', function (data) {
       console.log(data);
-      dataEl.innerHTML = data
+      dataEl.innerHTML = JSON.stringify(data)
     });
   </script>
 </body>
