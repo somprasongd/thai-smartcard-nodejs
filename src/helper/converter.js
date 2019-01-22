@@ -1,15 +1,3 @@
-module.exports.hexToString = hex => {
-  let string = '';
-  for (let i = 0; i < hex.length; i += 2) {
-    if (parseInt(hex.substr(i, 2), 16) > 160) {
-      string += String.fromCharCode(parseInt(hex.substr(i, 2), 16) + 3424);
-    } else {
-      string += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-    }
-  }
-  return string;
-};
-
 const base64Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 const binaryToBase64 = input => {
   let ret = [];
@@ -64,12 +52,4 @@ module.exports.pic_hex2base64 = hex => {
     binary[i] = parseInt(h, 16);
   }
   return binaryToBase64(binary);
-};
-
-module.exports.hash = value => {
-  let hash = 5381;
-  for (let i = 0; i < value.length; i++) {
-    hash = (hash << 5) + hash + value.charCodeAt(i);
-  }
-  return hash;
 };
