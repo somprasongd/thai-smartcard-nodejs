@@ -1,5 +1,10 @@
-const { Devices } = require('smartcard');
-const { PersonalApplet, NhsoApplet } = require('./applet');
+const {
+  Devices
+} = require('smartcard');
+const {
+  PersonalApplet,
+  NhsoApplet
+} = require('./applet');
 
 const DEFAULT_QUERY = [
   'cid',
@@ -17,6 +22,7 @@ const ALL_QUERY = [
   'issuer',
   'issueDate',
   'expireDate',
+  'address',
   'photo',
   'nhso'
 ];
@@ -52,33 +58,52 @@ module.exports.init = io => {
       }
 
       try {
+        const q = query ? [...query] : [...DEFAULT_QUERY];
+        let data = {};
         const personalApplet = new PersonalApplet(card, req);
-        const personal = await personalApplet.getInfo();
+        const personal = await personalApplet.getInfo(q.filter(key => key !== 'nhso'));
+        data = { ...personal
+        };
 
-        const nhsoApplet = new NhsoApplet(card, req);
-        const nhso = await nhsoApplet.getInfo();
-
-        console.log('Received data');
-        const data = { ...personal, nhso };
-        io.emit('smc-data', { status: 200, data });
+        if (q.includes('nhso')) {
+          const nhsoApplet = new NhsoApplet(card, req);
+          const nhso = await nhsoApplet.getInfo();
+          data = { ...data,
+            nhso
+          };
+        }
+        console.log('Received data', data);
+        io.emit('smc-data', {
+          status: 200,
+          data
+        });
       } catch (ex) {
         const message = `Exception: ${ex.message}`;
-        console.error(message);
-        io.emit('smc-error', { status: 500, message });
-        process.exit(); // auto restart with pm2
+        console.error(ex);
+        io.emit('smc-error', {
+          status: 500,
+          message
+        });
+        process.exit(); // auto restart handle by pm2
       }
     });
     device.on('card-removed', event => {
       const message = `Card removed from '${event.name}'`;
       console.log(message);
-      io.emit('smc-removed', { status: 404, message });
+      io.emit('smc-removed', {
+        status: 404,
+        message
+      });
     });
   });
 
   devices.on('device-deactivated', event => {
     const message = `Device '${event.device}' deactivated, devices: [${event.devices}]`;
     console.error(message);
-    io.emit('smc-deactivated', { status: 404, message });
+    io.emit('smc-deactivated', {
+      status: 404,
+      message
+    });
   });
 };
 
