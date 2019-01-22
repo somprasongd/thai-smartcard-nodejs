@@ -1,9 +1,12 @@
 const app = require('express')();
 const server = require('http').Server(app);
-const io = require('socket.io')(server);
 const path = require('path');
 const { publicDir } = require('./helper/path');
 const smc = require('./smc');
+
+const io = require('socket.io')(server, {
+  origins: 'localhost:9898'
+});
 
 smc.init(io);
 
