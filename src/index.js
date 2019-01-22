@@ -4,8 +4,10 @@ const path = require('path');
 const { publicDir } = require('./helper/path');
 const smc = require('./smc');
 
+const PORT = process.env.SMC_AGENT_PORT || 9898;
+
 const io = require('socket.io')(server, {
-  origins: 'localhost:9898'
+  origins: app.env !== 'production'? '*' :`localhost:${PORT}`
 });
 
 smc.init(io);
@@ -35,8 +37,6 @@ io.on('connection', function (socket) {
     console.log('client disconnected');
   });
 });
-
-const PORT = process.env.SMC_AGENT_PORT || 9898;
 
 server.listen(PORT, function () {
   console.log(`listening on *:${PORT}`);
