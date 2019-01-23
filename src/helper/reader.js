@@ -1,7 +1,6 @@
-const smartcard = require('smartcard');
-
-const CommandApdu = smartcard.CommandApdu;
-const legacy = require('legacy-encoding');
+const {
+  CommandApdu
+} = require('smartcard');
 
 exports.getData = async (card, command, req = [0x00, 0xc0, 0x00, 0x00]) => {
   let data = await card.issueCommand(

@@ -2,12 +2,12 @@ const {
   CommandApdu
 } = require('smartcard');
 const legacy = require('legacy-encoding');
-const dayjs = require('dayjs');
+// const dayjs = require('dayjs');
 const reader = require('../../helper/reader');
 const {
   apduPerson
 } = require('../apdu');
-const converter = require('../../helper/converter');
+const hex2imagebase64 = require('hex2imagebase64');
 
 class PersonalApplet {
   constructor(card, req = [0x00, 0xc0, 0x00, 0x00]) {
@@ -219,7 +219,7 @@ class PersonalApplet {
       photo += data.toString('hex').slice(0, -4);
       data = await reader.getData(this.card, apduPerson.CMD_PHOTO20, this.req);
       photo += data.toString('hex').slice(0, -4);
-      info.photo = converter.pic_hex2base64(photo);
+      info.photo = hex2imagebase64(photo);
     }
     return info;
   }

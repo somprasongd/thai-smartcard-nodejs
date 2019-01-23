@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Example-SMC</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
 </head>
 
@@ -16,18 +16,9 @@
     var socket = io.connect('http://localhost:9898');
     const dataEl = document.getElementById('data');
     socket.on('connect', function () {
-      console.log('connect')
-
       socket.emit('set-query', {
         query: ['cid', 'name']
       });
-
-      // socket.on('message', function (msg) {
-      //   console.log(msg)
-      // });
-    });
-    socket.on('greet', function (data) {
-      console.log(data);
     });
     socket.on('smc-data', function (data) {
       console.log(data);

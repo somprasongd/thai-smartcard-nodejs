@@ -7,11 +7,23 @@
     "start": "node ./src/index",
     "dev": "nodemon ./src/index"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "smartcard",
+    "thai smartcard"
+  ],
+  "author": "Somprasong Damyos",
+  "homepage": "https://github.com/somprasongd/thai-smartcard-nodejs#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/somprasongd/thai-smartcard-nodejs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/somprasongd/thai-smartcard-nodejs/issues"
+  },
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
+    "hex2imagebase64": "^1.0.0",
     "legacy-encoding": "^3.0.0",
     "smartcard": "^1.0.29",
     "socket.io": "^2.2.0"

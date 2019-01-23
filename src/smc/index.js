@@ -75,6 +75,7 @@ module.exports.init = io => {
         console.log('Received data', data);
         io.emit('smc-data', {
           status: 200,
+          description: 'Success',
           data
         });
       } catch (ex) {
@@ -82,7 +83,10 @@ module.exports.init = io => {
         console.error(ex);
         io.emit('smc-error', {
           status: 500,
-          message
+          description: 'Error',
+          data: {
+            message
+          }
         });
         process.exit(); // auto restart handle by pm2
       }
@@ -91,8 +95,11 @@ module.exports.init = io => {
       const message = `Card removed from '${event.name}'`;
       console.log(message);
       io.emit('smc-removed', {
-        status: 404,
-        message
+        status: 205,
+        description: 'Card Removed',
+        data: {
+          message
+        }
       });
     });
   });
@@ -100,9 +107,24 @@ module.exports.init = io => {
   devices.on('device-deactivated', event => {
     const message = `Device '${event.device}' deactivated, devices: [${event.devices}]`;
     console.error(message);
-    io.emit('smc-deactivated', {
+    io.emit('smc-error', {
       status: 404,
-      message
+      description: 'Not Found Smartcard Device',
+      data: {
+        message
+      }
+    });
+  });
+
+  devices.on('error', error => {
+    const message = `${error.error}`;
+    console.error(message);
+    io.emit('smc-error', {
+      status: 404,
+      description: 'Not Found Smartcard Device',
+      data: {
+        message
+      }
     });
   });
 };
