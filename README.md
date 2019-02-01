@@ -11,6 +11,7 @@
   PATH=%PATH%;C:\Python27\Scripts\;C:\Python27\
   ```
 
+- Run `$ npm install --global --production windows-build-tools`
 - Run `$ npm install`
 - Run `$ npm install -g pm2`
 - Run `$ pm2 start src/index.js --name smc`
