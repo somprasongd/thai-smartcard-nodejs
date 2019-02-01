@@ -4,14 +4,14 @@
 
 ### Windows
 
-- Install [Python 2.7.x](https://www.python.org/downloads/)
-- Set enviroments
+- ~~Install [Python 2.7.x]~~(https://www.python.org/downloads/)
+- ~~Set enviroments~~
 
   ```text
   PATH=%PATH%;C:\Python27\Scripts\;C:\Python27\
   ```
 
-- Run `$ npm install --global --production windows-build-tools`
+- Start PowerShell as Administrator and run: `$ npm install --global --production windows-build-tools`, or use option 2 in <https://github.com/nodejs/node-gyp#on-windows>
 - Run `$ npm install`
 - Run `$ npm install -g pm2`
 - Run `$ pm2 start src/index.js --name smc`
