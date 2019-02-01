@@ -4,8 +4,9 @@
 
 ### Windows
 
-- Install [Python 2.7.x](https://www.python.org/downloads/)
-- Set enviroments
+- Run `$ npm install --global --production windows-build-tools`
+- ~~Install [Python 2.7.x]~~(https://www.python.org/downloads/)
+- ~~Set enviroments~~
 
   ```text
   PATH=%PATH%;C:\Python27\Scripts\;C:\Python27\
