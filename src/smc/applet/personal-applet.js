@@ -68,7 +68,7 @@ class PersonalApplet {
             return name;
           }
           return `${name} ${d}`;
-        }, ''),
+        }, '').trim().replace(' ', ''),
       };
 
       info.name = th;
@@ -93,7 +93,7 @@ class PersonalApplet {
             return name;
           }
           return `${name} ${d}`;
-        }, ''),
+        }, '').trim().replace(' ', ''),
       };
 
       info.nameEN = en;
@@ -160,15 +160,17 @@ class PersonalApplet {
         .toString()
         .trim()
         .split('#');
+
       info.address = {
         houseNo: data[0],
+        moo: data[1].substring(7).trim(),
         street: data
-          .slice(1, -3)
+          .slice(2, -3)
           .join(' ')
           .trim(),
-        subdistrict: data[data.length - 3],
-        district: data[data.length - 2],
-        province: data[data.length - 1],
+        subdistrict: data[data.length - 3].substring(4).trim(),
+        district: data[data.length - 2].substring(5).trim(),
+        province: data[data.length - 1].substring(7).trim(),
         full: data.reduce((addr, d) => {
           if (d.length === 0) {
             return addr;

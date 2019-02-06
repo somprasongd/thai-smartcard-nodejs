@@ -42,7 +42,15 @@ module.exports.init = io => {
 
     device.on('card-inserted', async event => {
       const card = event.card;
-      console.log(`Card '${card.getAtr()}' inserted into '${event.device}'`);
+      const message = `Card '${card.getAtr()}' inserted into '${event.device}'`;
+      io.emit('smc-inserted', {
+        status: 202,
+        description: 'Card Inserted',
+        data: {
+          message
+        }
+      });
+      console.log(message);
 
       // card.on('command-issued', event => {
       //   console.log(`Command '${event.command}' issued to '${event.card}' `);
@@ -62,13 +70,15 @@ module.exports.init = io => {
         let data = {};
         const personalApplet = new PersonalApplet(card, req);
         const personal = await personalApplet.getInfo(q.filter(key => key !== 'nhso'));
-        data = { ...personal
+        data = {
+          ...personal
         };
 
         if (q.includes('nhso')) {
           const nhsoApplet = new NhsoApplet(card, req);
           const nhso = await nhsoApplet.getInfo();
-          data = { ...data,
+          data = {
+            ...data,
             nhso
           };
         }
@@ -97,6 +107,18 @@ module.exports.init = io => {
       io.emit('smc-removed', {
         status: 205,
         description: 'Card Removed',
+        data: {
+          message
+        }
+      });
+    });
+
+    device.on('error', event => {
+      const message = `Incorrect card input'`;
+      console.log(message);
+      io.emit('smc-incorrect', {
+        status: 400,
+        description: 'Incorrect card input',
         data: {
           message
         }

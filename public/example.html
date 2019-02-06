@@ -17,7 +17,7 @@
     const dataEl = document.getElementById('data');
     socket.on('connect', function () {
       socket.emit('set-query', {
-        query: ['cid', 'name']
+        query: ['cid', 'name', 'address']
       });
     });
     socket.on('smc-data', function (data) {
@@ -29,6 +29,14 @@
       dataEl.innerHTML = JSON.stringify(data)
     });
     socket.on('smc-removed', function (data) {
+      console.log(data);
+      dataEl.innerHTML = JSON.stringify(data)
+    });
+    socket.on('smc-incorrect', function (data) {
+      console.log(data);
+      dataEl.innerHTML = JSON.stringify(data)
+    });
+    socket.on('smc-inserted', function (data) {
       console.log(data);
       dataEl.innerHTML = JSON.stringify(data)
     });
