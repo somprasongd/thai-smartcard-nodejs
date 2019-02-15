@@ -17,7 +17,19 @@
     const dataEl = document.getElementById('data');
     socket.on('connect', function () {
       socket.emit('set-query', {
-        query: ['cid', 'name', 'address']
+        query: [
+          'cid',
+          'name',
+          'nameEn',
+          'dob',
+          'gender',
+          'issuer',
+          'issueDate',
+          'expireDate',
+          'address',
+          'photo',
+          'nhso'
+        ]
       });
     });
     socket.on('smc-data', function (data) {

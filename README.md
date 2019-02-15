@@ -45,16 +45,22 @@
     // socket.emit('set-all-query');
   });
   socket.on('smc-data', function (data) {
-    console.log(data); // JSON {status: 200, data: {}}
+    console.log(data); // JSON {status: 200, description:, 'Success', data: {}
   });
   socket.on('smc-error', function (data) {
-    console.log(data); // JSON {status: 500, message: ''}
+    console.log(data); // JSON {status: 500, description:, 'Error', data: {message: ''}
   });
   socket.on('smc-removed', function (data) {
-    console.log(data); // JSON {status: 404, message: ''}
+    console.log(data); // JSON {status: 205, description:, 'Card Removed', data: {message: ''}
   });
   socket.on('smc-deactivated', function (data) {
-    console.log(data); // JSON {status: 404, message: ''}
+    console.log(data); // JSON {status: 404, description:, 'Not Found Smartcard Device', data: {message: ''}
+  });
+  socket.on('smc-incorrect', function (data) {
+      console.log(data); // JSON {status: 400, description:, 'Incorrect card input', data: {message: ''}
+  });
+  socket.on('smc-inserted', function (data) {
+    console.log(data); // JSON {status: 202, description:, 'Card Inserted', data: {message: ''}
   });
 </script>
 ```
