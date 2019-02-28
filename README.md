@@ -21,7 +21,10 @@
 - Install [Python 2.7.x](https://www.python.org/downloads/)
 - Run `$ sudo apt-get install libpcsclite1 libpcsclite-dev pcscd`
 - Run `$ npm install`
-- Run `$ npm start`
+- Run `$ npm install -g pm2`
+- Run `$ pm2 start src/index.js --name smc`
+- Run `$ pm2 startup`
+- Run `$ pm2 save`
 
 ## Change Server Port
 
