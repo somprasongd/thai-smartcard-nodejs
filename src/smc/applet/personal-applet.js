@@ -163,7 +163,8 @@ class PersonalApplet {
 
       info.address = {
         houseNo: data[0],
-        moo: data[1].substring(7).trim(),
+        moo: (data[1].startsWith('หมู่ที่') ? data[1].substring(7) : '').trim(),
+        soi: (data[1].startsWith('ซอย') ? data[1].substring(3) : '').trim(),
         street: data
           .slice(2, -3)
           .join(' ')
