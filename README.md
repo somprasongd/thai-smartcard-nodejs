@@ -67,3 +67,9 @@
   });
 </script>
 ```
+
+## Donate
+
+สนับสนุนได้ผ่านทาง Promptpay
+
+<img src="https://promptpay.io/somprasongd.png">
