@@ -13,8 +13,10 @@
 
 - Start PowerShell as Administrator and run: `$ npm install --global --production windows-build-tools`, or use option 2 in <https://github.com/nodejs/node-gyp#on-windows>
 - Run `$ npm install`
-- Run `$ npm install -g pm2`
+- Run `$ npm install -g pm2 pm2-windows-startup`
+- Run `$ pm2-startup install`
 - Run `$ pm2 start src/index.js --name smc`
+- Run `$ pm2 save`
 
 ### Ubuntu & Pi
 
