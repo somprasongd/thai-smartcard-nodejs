@@ -4,7 +4,7 @@
 
 ### Windows
 
-- Install Nodejs with nvm-windows (use node 10.16.3)
+- Install Nodejs with [nvm-windows](https://github.com/coreybutler/nvm-windows/releases) (use node 10.16.3)
   ```bash
   nvm install 10.16.3
   nvm use 10.16.3
@@ -23,7 +23,7 @@
 
 - Install [Python 2.7.x](https://www.python.org/downloads/)
 - Run `$ sudo apt-get install libpcsclite1 libpcsclite-dev pcscd`
-- Install Nodejs with nvm (use node 10.16.3)
+- Install Nodejs with [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) (use node 10.16.3)
   ```bash
   nvm install 10.16.3
   nvm
