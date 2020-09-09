@@ -4,12 +4,6 @@
 
 ### Windows
 
-- ~~Install [Python 2.7.x]~~(https://www.python.org/downloads/)
-- ~~Set enviroments~~
-
-  ```text
-  PATH=%PATH%;C:\Python27\Scripts\;C:\Python27\
-  ```
 - Install Nodejs with nvm-windows (use node 10.16.3)
   ```bash
   nvm install 10.16.3
