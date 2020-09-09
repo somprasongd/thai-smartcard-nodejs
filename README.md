@@ -10,23 +10,38 @@
   ```text
   PATH=%PATH%;C:\Python27\Scripts\;C:\Python27\
   ```
-
-- Start PowerShell as Administrator and run: `$ npm install --global --production windows-build-tools`, or use option 2 in <https://github.com/nodejs/node-gyp#on-windows>
-- Run `$ npm install`
-- Run `$ npm install -g pm2 pm2-windows-startup`
-- Run `$ pm2-startup install`
-- Run `$ pm2 start src/index.js --name smc`
-- Run `$ pm2 save`
+- Install Nodejs with nvm-windows (use node 10.16.3)
+  ```bash
+  nvm install 10.16.3
+  nvm use 10.16.3
+  ```
+- Start PowerShell as Administrator and run: `npm install --global --production windows-build-tools`, or use option 2 in <https://github.com/nodejs/node-gyp#on-windows>
+- Go to `thai-smartcard-nodejs` and run `npm install`
+- Setup PM2
+  ```bash
+  npm install -g pm2 pm2-windows-startup
+  pm2-startup install
+  pm2 start src/index.js --name smc
+  pm2 save
+  ```
 
 ### Ubuntu & Pi
 
 - Install [Python 2.7.x](https://www.python.org/downloads/)
 - Run `$ sudo apt-get install libpcsclite1 libpcsclite-dev pcscd`
-- Run `$ npm install`
-- Run `$ npm install -g pm2`
-- Run `$ pm2 start src/index.js --name smc`
-- Run `$ pm2 startup`
-- Run `$ pm2 save`
+- Install Nodejs with nvm (use node 10.16.3)
+  ```bash
+  nvm install 10.16.3
+  nvm
+  ```
+- Go to `thai-smartcard-nodejs` and run `npm install`
+- Setup PM2
+  ```bash
+  npm install -g pm2
+  pm2 start src/index.js --name smc
+  pm2 startup
+  pm2 save
+  ```
 
 ## Change Server Port
 
