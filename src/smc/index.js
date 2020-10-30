@@ -1,17 +1,7 @@
-const {
-  Devices
-} = require('smartcard');
-const {
-  PersonalApplet,
-  NhsoApplet
-} = require('./applet');
+const { Devices } = require('smartcard');
+const { PersonalApplet, NhsoApplet } = require('./applet');
 
-const DEFAULT_QUERY = [
-  'cid',
-  'name',
-  'dob',
-  'gender'
-];
+const DEFAULT_QUERY = ['cid', 'name', 'dob', 'gender'];
 
 const ALL_QUERY = [
   'cid',
@@ -24,15 +14,15 @@ const ALL_QUERY = [
   'expireDate',
   'address',
   'photo',
-  'nhso'
+  'nhso',
 ];
 
 let query = [...DEFAULT_QUERY];
 
-module.exports.init = io => {
+module.exports.init = (io) => {
   const devices = new Devices();
 
-  devices.on('device-activated', event => {
+  devices.on('device-activated', (event) => {
     const currentDevices = event.devices;
     const device = event.device;
     console.log(`Device '${device}' activated, devices: ${currentDevices}`);
@@ -40,15 +30,15 @@ module.exports.init = io => {
       console.log(`Devices: ${currentDevices[prop]}`);
     }
 
-    device.on('card-inserted', async event => {
+    device.on('card-inserted', async (event) => {
       const card = event.card;
       const message = `Card '${card.getAtr()}' inserted into '${event.device}'`;
       io.emit('smc-inserted', {
         status: 202,
         description: 'Card Inserted',
         data: {
-          message
-        }
+          message,
+        },
       });
       console.log(message);
 
@@ -61,7 +51,9 @@ module.exports.init = io => {
       // });
 
       let req = [0x00, 0xc0, 0x00, 0x00];
-      if (card.getAtr().slice(0, 4) === Buffer.from([0x3b, 0x67]).toString('hex')) {
+      if (
+        card.getAtr().slice(0, 4) === Buffer.from([0x3b, 0x67]).toString('hex')
+      ) {
         req = [0x00, 0xc0, 0x00, 0x01];
       }
 
@@ -69,9 +61,11 @@ module.exports.init = io => {
         const q = query ? [...query] : [...DEFAULT_QUERY];
         let data = {};
         const personalApplet = new PersonalApplet(card, req);
-        const personal = await personalApplet.getInfo(q.filter(key => key !== 'nhso'));
+        const personal = await personalApplet.getInfo(
+          q.filter((key) => key !== 'nhso')
+        );
         data = {
-          ...personal
+          ...personal,
         };
 
         if (q.includes('nhso')) {
@@ -79,14 +73,14 @@ module.exports.init = io => {
           const nhso = await nhsoApplet.getInfo();
           data = {
             ...data,
-            nhso
+            nhso,
           };
         }
         console.log('Received data', data);
         io.emit('smc-data', {
           status: 200,
           description: 'Success',
-          data
+          data,
         });
       } catch (ex) {
         const message = `Exception: ${ex.message}`;
@@ -95,68 +89,68 @@ module.exports.init = io => {
           status: 500,
           description: 'Error',
           data: {
-            message
-          }
+            message,
+          },
         });
-        process.exit(); // auto restart handle by pm2
+        // process.exit(); // auto restart handle by pm2
       }
     });
-    device.on('card-removed', event => {
+    device.on('card-removed', (event) => {
       const message = `Card removed from '${event.name}'`;
       console.log(message);
       io.emit('smc-removed', {
         status: 205,
         description: 'Card Removed',
         data: {
-          message
-        }
+          message,
+        },
       });
     });
 
-    device.on('error', event => {
+    device.on('error', (event) => {
       const message = `Incorrect card input'`;
       console.log(message);
       io.emit('smc-incorrect', {
         status: 400,
         description: 'Incorrect card input',
         data: {
-          message
-        }
+          message,
+        },
       });
     });
   });
 
-  devices.on('device-deactivated', event => {
+  devices.on('device-deactivated', (event) => {
     const message = `Device '${event.device}' deactivated, devices: [${event.devices}]`;
     console.error(message);
     io.emit('smc-error', {
       status: 404,
       description: 'Not Found Smartcard Device',
       data: {
-        message
-      }
+        message,
+      },
     });
   });
 
-  devices.on('error', error => {
+  devices.on('error', (error) => {
     const message = `${error.error}`;
     console.error(message);
     io.emit('smc-error', {
       status: 404,
       description: 'Not Found Smartcard Device',
       data: {
-        message
-      }
+        message,
+      },
     });
   });
 };
 
 module.exports.setQuery = (q = DEFAULT_QUERY) => {
   query = [...q];
-  console.log(query)
-}
+  console.log(query);
+};
 
 module.exports.setAllQuery = () => {
   query = [...ALL_QUERY];
-  console.log(query)
-}
+  console.log(query);
+};

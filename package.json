@@ -25,10 +25,10 @@
     "express": "^4.16.4",
     "hex2imagebase64": "^1.0.0",
     "legacy-encoding": "^3.0.0",
-    "smartcard": "^1.0.29",
-    "socket.io": "^2.2.0"
+    "smartcard": "^1.0.37",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.9"
+    "nodemon": "^2.0.6"
   }
 }
