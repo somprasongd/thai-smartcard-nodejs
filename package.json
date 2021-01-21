@@ -26,7 +26,7 @@
     "hex2imagebase64": "^1.0.0",
     "legacy-encoding": "^3.0.0",
     "smartcard": "^1.0.29",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.4.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"
