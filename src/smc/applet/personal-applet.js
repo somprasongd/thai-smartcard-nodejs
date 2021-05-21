@@ -170,7 +170,7 @@ class PersonalApplet {
           .join(' ')
           .trim(),
         subdistrict: data[data.length - 3].substring(4).trim(),
-        district: data[data.length - 2].substring(5).trim(),
+        district: data[data.length-2].substring(0,3)=='เขต' ?  data[data.length-2].substring(3).trim() : data[data.length - 2].substring(5).trim(),
         province: data[data.length - 1].substring(7).trim(),
         full: data.reduce((addr, d) => {
           if (d.length === 0) {
