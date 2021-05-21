@@ -1,6 +1,6 @@
 {
   "env": {
     "SMC_AGENT_PORT": "9898",
-    "EXIST_WHEN_READ_ERROR": "true"
+    "EXIST_WHEN_READ_ERROR": "false"
   }
 }

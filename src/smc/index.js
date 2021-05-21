@@ -1,7 +1,7 @@
 const { Devices } = require('smartcard');
 const { PersonalApplet, NhsoApplet } = require('./applet');
 
-const EXIST_WHEN_READ_ERROR = (process.env.EXIST_WHEN_READ_ERROR && process.env.EXIST_WHEN_READ_ERROR === 'true') || false;
+const EXIST_WHEN_READ_ERROR = process.env.EXIST_WHEN_READ_ERROR && process.env.EXIST_WHEN_READ_ERROR === 'false' ? false : true;
 
 const DEFAULT_QUERY = ['cid', 'name', 'dob', 'gender'];
 
