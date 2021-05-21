@@ -1,58 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Example-SMC</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Example-SMC</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-</head>
-
-<body>
-  <h1>SMC</h1>
-  <p id='data'></p>
-  <script>
-    var socket = io.connect('http://localhost:9898');
-    const dataEl = document.getElementById('data');
-    socket.on('connect', function () {
-      socket.emit('set-query', {
-        query: [
-          'cid',
-          'name',
-          'nameEn',
-          'dob',
-          'gender',
-          'issuer',
-          'issueDate',
-          'expireDate',
-          'address',
-          'photo',
-          'nhso'
-        ]
+  <body>
+    <h1>SMC</h1>
+    <p id="data"></p>
+    <script>
+      var socket = io.connect('http://localhost:9898');
+      const dataEl = document.getElementById('data');
+      socket.on('connect', function () {
+        socket.emit('set-query', {
+          query: [
+            // 'cid',
+            'name',
+            // 'nameEn',
+            // 'dob',
+            // 'gender',
+            // 'issuer',
+            // 'issueDate',
+            // 'expireDate',
+            'address',
+            'photo',
+            // 'nhso',
+          ],
+        });
       });
-    });
-    socket.on('smc-data', function (data) {
-      console.log(data);
-      dataEl.innerHTML = JSON.stringify(data)
-    });
-    socket.on('smc-error', function (data) {
-      console.log(data);
-      dataEl.innerHTML = JSON.stringify(data)
-    });
-    socket.on('smc-removed', function (data) {
-      console.log(data);
-      dataEl.innerHTML = JSON.stringify(data)
-    });
-    socket.on('smc-incorrect', function (data) {
-      console.log(data);
-      dataEl.innerHTML = JSON.stringify(data)
-    });
-    socket.on('smc-inserted', function (data) {
-      console.log(data);
-      dataEl.innerHTML = JSON.stringify(data)
-    });
-  </script>
-</body>
-
+      socket.on('smc-data', function (data) {
+        console.log(data);
+        dataEl.innerHTML = JSON.stringify(data);
+      });
+      socket.on('smc-error', function (data) {
+        console.log(data);
+        dataEl.innerHTML = JSON.stringify(data);
+      });
+      socket.on('smc-removed', function (data) {
+        console.log(data);
+        dataEl.innerHTML = JSON.stringify(data);
+      });
+      socket.on('smc-incorrect', function (data) {
+        console.log(data);
+        dataEl.innerHTML = JSON.stringify(data);
+      });
+      socket.on('smc-inserted', function (data) {
+        console.log(data);
+        dataEl.innerHTML = JSON.stringify(data);
+      });
+    </script>
+  </body>
 </html>
