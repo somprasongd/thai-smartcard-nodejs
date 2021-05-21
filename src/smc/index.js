@@ -1,6 +1,8 @@
 const { Devices } = require('smartcard');
 const { PersonalApplet, NhsoApplet } = require('./applet');
 
+const EXIST_WHEN_READ_ERROR = (process.env.EXIST_WHEN_READ_ERROR && process.env.EXIST_WHEN_READ_ERROR === 'true') || false;
+
 const DEFAULT_QUERY = ['cid', 'name', 'dob', 'gender'];
 
 const ALL_QUERY = [
@@ -92,7 +94,9 @@ module.exports.init = (io) => {
             message,
           },
         });
-        // process.exit(); // auto restart handle by pm2
+        if (EXIST_WHEN_READ_ERROR) {
+          process.exit(); // auto restart handle by pm2
+        }        
       }
     });
     device.on('card-removed', (event) => {
