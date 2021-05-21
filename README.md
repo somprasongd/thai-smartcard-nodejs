@@ -1,7 +1,5 @@
 # Thai Smartcard Reader with Node.js
 
-## Run on Node 12+ use [dev](https://github.com/somprasongd/thai-smartcard-nodejs/tree/dev) branch
-
 ## Installation
 
 ### Windows
