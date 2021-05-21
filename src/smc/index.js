@@ -3,8 +3,6 @@ const { PersonalApplet, NhsoApplet } = require('./applet');
 
 const EXIST_WHEN_READ_ERROR = process.env.EXIST_WHEN_READ_ERROR && process.env.EXIST_WHEN_READ_ERROR === 'false' ? false : true;
 
-console.log(EXIST_WHEN_READ_ERROR)
-
 const DEFAULT_QUERY = ['cid', 'name', 'dob', 'gender'];
 
 const ALL_QUERY = [
