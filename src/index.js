@@ -1,7 +1,5 @@
 const path = require('path');
-const {
-  publicDir
-} = require('./helper/path');
+const { publicDir } = require('./helper/path');
 const app = require('express')();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
@@ -19,23 +17,17 @@ if (app.env !== 'production') {
   });
 }
 
-io.on('connection', socket => {
+io.on('connection', (socket) => {
   console.log(`New connection from ${socket.id}`);
 
   socket.on('set-query', (data = {}) => {
-    const {
-      query = undefined
-    } = data;
+    const { query = undefined } = data;
     console.log(`set-query: ${query}`);
     smc.setQuery(query);
   });
 
   socket.on('set-all-query', (data = {}) => {
-    const {
-      query = undefined
-    } = data;
-    console.log(`set-query: ${query}`);
-    smc.setQuery(query);
+    smc.setAllQuery();
   });
 
   socket.on('disconnect', () => {
