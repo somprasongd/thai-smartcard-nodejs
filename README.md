@@ -1,5 +1,7 @@
 # Thai Smartcard Reader with Node.js
 
+Golang Version: https://github.com/somprasongd/go-thai-smartcard
+
 ## Installation
 
 ### Windows
@@ -42,6 +44,7 @@
 - Install [Xcode Command-line Tools](https://developer.apple.com/download/more/?=command%20line%20tools)
 - Install [Homebrew](https://brew.sh/)
 - Install nvm
+
 ```bash
 # 1. Install NVM
 brew install nvm
@@ -59,6 +62,7 @@ source ~/.bash_profile (or source ~/.zshrc)
 # 5. Test
 nvm -v
 ```
+
 - Install Nodejs with [nvm]
   ```bash
   nvm install 14.15
