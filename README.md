@@ -1,6 +1,10 @@
 # Thai Smartcard Reader with Node.js
 
-Golang Version: https://github.com/somprasongd/go-thai-smartcard
+Nodejs application read personal and nhso data from thai id card, it run in the background and wait until inserted card then send readed data to everyone via [socket.io](https://socket.io/).
+
+## Other Version
+[Go](https://github.com/somprasongd/go-thai-smartcard)
+[Java](https://github.com/somprasongd/jThaiSmartCard)
 
 ## Installation
 
@@ -81,7 +85,9 @@ nvm -v
 
 - Default port is `9898`, change by set system environment `SMC_AGENT_PORT`.
 
-## Client connect with socket.io
+## Example
+
+### Client connect with socket.io
 
 ```javascript
 <script>
@@ -99,22 +105,22 @@ nvm -v
     // socket.emit('set-all-query');
   });
   socket.on('smc-data', function (data) {
-    console.log(data); // JSON {status: 200, description:, 'Success', data: {}
+    console.log(data);
   });
   socket.on('smc-error', function (data) {
-    console.log(data); // JSON {status: 500, description:, 'Error', data: {message: ''}
+    console.log(data);
   });
   socket.on('smc-removed', function (data) {
-    console.log(data); // JSON {status: 205, description:, 'Card Removed', data: {message: ''}
+    console.log(data);
   });
   socket.on('smc-deactivated', function (data) {
-    console.log(data); // JSON {status: 404, description:, 'Not Found Smartcard Device', data: {message: ''}
+    console.log(data);
   });
   socket.on('smc-incorrect', function (data) {
-      console.log(data); // JSON {status: 400, description:, 'Incorrect card input', data: {message: ''}
+      console.log(data);
   });
   socket.on('smc-inserted', function (data) {
-    console.log(data); // JSON {status: 202, description:, 'Card Inserted', data: {message: ''}
+    console.log(data);
   });
 </script>
 ```
