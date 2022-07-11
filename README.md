@@ -3,8 +3,8 @@
 Nodejs application read personal and nhso data from thai id card, it run in the background and wait until inserted card then send readed data to everyone via [socket.io](https://socket.io/).
 
 ## Other Version
-[Go](https://github.com/somprasongd/go-thai-smartcard)
-[Java](https://github.com/somprasongd/jThaiSmartCard)
+- [Go](https://github.com/somprasongd/go-thai-smartcard)
+- [Java](https://github.com/somprasongd/jThaiSmartCard)
 
 ## Installation
 
