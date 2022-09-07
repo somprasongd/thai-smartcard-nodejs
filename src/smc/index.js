@@ -1,7 +1,13 @@
-const { Devices } = require('smartcard');
+const { Devices, CommandApdu } = require('smartcard');
 const { PersonalApplet, NhsoApplet } = require('./applet');
+const reader = require('../helper/reader');
+const { sleep } = require('../helper/sleep');
 
-const EXIST_WHEN_READ_ERROR = process.env.EXIST_WHEN_READ_ERROR && process.env.EXIST_WHEN_READ_ERROR === 'false' ? false : true;
+const EXIST_WHEN_READ_ERROR =
+  process.env.EXIST_WHEN_READ_ERROR &&
+  process.env.EXIST_WHEN_READ_ERROR === 'false'
+    ? false
+    : true;
 
 const DEFAULT_QUERY = ['cid', 'name', 'dob', 'gender'];
 
@@ -17,16 +23,21 @@ const ALL_QUERY = [
   'address',
   'photo',
   'nhso',
+  'laserId',
 ];
 
 let query = [...DEFAULT_QUERY];
 
 module.exports.init = (io) => {
-  const devices = new Devices();
-
+  let devices = new Devices();
+  console.log(devices.pcsc);
   devices.on('device-activated', (event) => {
+    // console.log('device-activated');
+    // console.log(devices);
     const currentDevices = event.devices;
+    // console.log(currentDevices);
     const device = event.device;
+    // console.log(device);
     console.log(`Device '${device}' activated, devices: ${currentDevices}`);
     for (const prop in currentDevices) {
       console.log(`Devices: ${currentDevices[prop]}`);
@@ -44,40 +55,18 @@ module.exports.init = (io) => {
       });
       console.log(message);
 
-      // card.on('command-issued', event => {
-      //   console.log(`Command '${event.command}' issued to '${event.card}' `);
-      // });
+      card.on('command-issued', (event) => {
+        console.log(`Command '${event.command}' issued to '${event.card}' `);
+      });
 
-      // card.on('response-received', event => {
-      //   console.log(`Response '${event.response}' received from '${event.card}' in response to '${event.command}'`);
-      // });
-
-      let req = [0x00, 0xc0, 0x00, 0x00];
-      if (
-        card.getAtr().slice(0, 4) === Buffer.from([0x3b, 0x67]).toString('hex')
-      ) {
-        req = [0x00, 0xc0, 0x00, 0x01];
-      }
+      card.on('response-received', (event) => {
+        console.log(
+          `Response '${event.response}' received from '${event.card}' in response to '${event.command}'`
+        );
+      });
 
       try {
-        const q = query ? [...query] : [...DEFAULT_QUERY];
-        let data = {};
-        const personalApplet = new PersonalApplet(card, req);
-        const personal = await personalApplet.getInfo(
-          q.filter((key) => key !== 'nhso')
-        );
-        data = {
-          ...personal,
-        };
-
-        if (q.includes('nhso')) {
-          const nhsoApplet = new NhsoApplet(card, req);
-          const nhso = await nhsoApplet.getInfo();
-          data = {
-            ...data,
-            nhso,
-          };
-        }
+        data = await read(card);
         console.log('Received data', data);
         io.emit('smc-data', {
           status: 200,
@@ -96,7 +85,7 @@ module.exports.init = (io) => {
         });
         if (EXIST_WHEN_READ_ERROR) {
           process.exit(); // auto restart handle by pm2
-        }        
+        }
       }
     });
     device.on('card-removed', (event) => {
@@ -158,3 +147,70 @@ module.exports.setAllQuery = () => {
   query = [...ALL_QUERY];
   console.log(query);
 };
+
+async function readWithRetry(card, maxRetry) {
+  retryCount = 0;
+  while (true) {
+    try {
+      data = await read(card);
+      return data;
+    } catch (error) {
+      console.log(error);
+      if (
+        retryCount === maxRetry ||
+        error.message === 'Card Reader not connected'
+      ) {
+        throw error;
+      }
+      retryCount = retryCount + 1;
+      await sleep(3000);
+      console.log('Retry read card #', retryCount);
+    }
+  }
+}
+
+function read(card) {
+  console.log(card);
+  return new Promise(async (resolve, reject) => {
+    let req = [0x00, 0xc0, 0x00, 0x00];
+    if (
+      card.getAtr().slice(0, 4) === Buffer.from([0x3b, 0x67]).toString('hex')
+    ) {
+      req = [0x00, 0xc0, 0x00, 0x01];
+    }
+
+    try {
+      const q = query ? [...query] : [...DEFAULT_QUERY];
+      let data = {};
+      const personalApplet = new PersonalApplet(card, req);
+      const personal = await personalApplet.getInfo(
+        q.filter((key) => key !== 'nhso' || key !== 'laserId')
+      );
+      data = {
+        ...personal,
+      };
+
+      // laserid
+      if (q.includes('laserId')) {
+        laserId = await reader.getLaser(card);
+        // console.log('data', data, data.length);
+        data = {
+          ...data,
+          laserId,
+        };
+      }
+
+      if (q.includes('nhso')) {
+        const nhsoApplet = new NhsoApplet(card, req);
+        const nhso = await nhsoApplet.getInfo();
+        data = {
+          ...data,
+          nhso,
+        };
+      }
+      return resolve(data);
+    } catch (ex) {
+      return reject(ex);
+    }
+  });
+}

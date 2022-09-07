@@ -17,17 +17,18 @@
       socket.on('connect', function () {
         socket.emit('set-query', {
           query: [
-            // 'cid',
+            'cid',
             'name',
-            // 'nameEn',
-            // 'dob',
-            // 'gender',
-            // 'issuer',
-            // 'issueDate',
-            // 'expireDate',
+            'nameEn',
+            'dob',
+            'gender',
+            'issuer',
+            'issueDate',
+            'expireDate',
             'address',
             'photo',
-            // 'nhso',
+            'nhso',
+            'laserId',
           ],
         });
       });

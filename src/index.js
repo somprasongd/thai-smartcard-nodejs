@@ -39,7 +39,7 @@ server.listen(PORT, () => {
   console.log(`listening on *:${PORT}`);
   // connect to smart card reader after server started.
   // delay because if restart by pm2, need to wait connection from client to set query
-  setTimeout(() => {
+  setTimeout(async () => {
     smc.init(io);
   }, 1500);
 });

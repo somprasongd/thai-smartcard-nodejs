@@ -68,18 +68,21 @@ nvm -v
 ```
 
 - Install Nodejs with [nvm]
-  ```bash
-  nvm install 14.15
-  nvm use 14.15
-  ```
+
+```bash
+nvm install 14.15
+nvm use 14.15
+```
+
 - Go to `thai-smartcard-nodejs` and run `npm install`
 - Setup PM2
-  ```bash
-  npm install -g pm2
-  pm2 start src/index.js --name smc
-  pm2 startup
-  pm2 save
-  ```
+
+```bash
+npm install -g pm2
+pm2 start src/index.js --name smc
+pm2 startup
+pm2 save
+```
 
 ## Change Server Port
 
@@ -95,7 +98,7 @@ nvm -v
   socket.on('connect', function () {
     /**
     * Select field to read from smart card
-    * Available fields: 'cid', 'name', 'nameEn', 'dob', 'gender', 'issuer', 'issueDate', 'expireDate', 'address', 'photo', 'nhso'
+    * Available fields: 'cid', 'name', 'nameEn', 'dob', 'gender', 'issuer', 'issueDate', 'expireDate', 'address', 'photo', 'nhso', 'laserId'
     */
     socket.emit('set-query', {
       query: ['cid', 'name']
