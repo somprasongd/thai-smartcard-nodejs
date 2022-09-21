@@ -9,6 +9,11 @@ const EXIST_WHEN_READ_ERROR =
     ? false
     : true;
 
+const DEBUG =
+  process.env.SMC_AGENT_DEBUG && process.env.SMC_AGENT_DEBUG === 'true'
+    ? true
+    : false;
+
 const DEFAULT_QUERY = ['cid', 'name', 'dob', 'gender'];
 
 const ALL_QUERY = [
@@ -30,7 +35,6 @@ let query = [...DEFAULT_QUERY];
 
 module.exports.init = (io) => {
   let devices = new Devices();
-  console.log(devices.pcsc);
   devices.on('device-activated', (event) => {
     // console.log('device-activated');
     // console.log(devices);
@@ -67,7 +71,7 @@ module.exports.init = (io) => {
 
       try {
         data = await read(card);
-        console.log('Received data', data);
+        if (DEBUG) console.log('Received data', data);
         io.emit('smc-data', {
           status: 200,
           description: 'Success',
@@ -170,7 +174,6 @@ async function readWithRetry(card, maxRetry) {
 }
 
 function read(card) {
-  console.log(card);
   return new Promise(async (resolve, reject) => {
     let req = [0x00, 0xc0, 0x00, 0x00];
     if (
