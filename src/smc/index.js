@@ -195,8 +195,13 @@ function read(card) {
 
       // laserid
       if (q.includes('laserId')) {
-        laserId = await reader.getLaser(card);
-        // console.log('data', data, data.length);
+        let laserId = '';
+        try {
+          laserId = await reader.getLaser(card);
+          // console.log('data', data, data.length);
+        } catch (error) {
+          console.log('Can not read laserId', error);
+        }
         data = {
           ...data,
           laserId,
