@@ -193,6 +193,15 @@ function read(card) {
         ...personal,
       };
 
+      if (q.includes('nhso')) {
+        const nhsoApplet = new NhsoApplet(card, req);
+        const nhso = await nhsoApplet.getInfo();
+        data = {
+          ...data,
+          nhso,
+        };
+      }
+
       // laserid
       if (q.includes('laserId')) {
         let laserId = '';
@@ -208,14 +217,6 @@ function read(card) {
         };
       }
 
-      if (q.includes('nhso')) {
-        const nhsoApplet = new NhsoApplet(card, req);
-        const nhso = await nhsoApplet.getInfo();
-        data = {
-          ...data,
-          nhso,
-        };
-      }
       return resolve(data);
     } catch (ex) {
       return reject(ex);
