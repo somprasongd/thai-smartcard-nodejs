@@ -22,7 +22,7 @@
   },
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "hex2imagebase64": "^1.0.0",
     "legacy-encoding": "^3.0.0",
     "smartcard": "^1.0.37",
