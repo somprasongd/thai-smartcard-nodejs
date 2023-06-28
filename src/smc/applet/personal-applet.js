@@ -1,12 +1,8 @@
-const {
-  CommandApdu
-} = require('smartcard');
+const { CommandApdu } = require('smartcard');
 const legacy = require('legacy-encoding');
 // const dayjs = require('dayjs');
 const reader = require('../../helper/reader');
-const {
-  apduPerson
-} = require('../apdu');
+const { apduPerson } = require('../apdu');
 const hex2imagebase64 = require('hex2imagebase64');
 
 class PersonalApplet {
@@ -25,21 +21,24 @@ class PersonalApplet {
       )
     );
 
-    const q = query.reduce((q, key) => ({
-      ...q,
-      [key]: true
-    }), {
-      'cid': false,
-      'name': false,
-      'nameEn': false,
-      'dob': false,
-      'gender': false,
-      'issuer': false,
-      'issueDate': false,
-      'expireDate': false,
-      'address': false,
-      'photo': false,
-    });
+    const q = query.reduce(
+      (q, key) => ({
+        ...q,
+        [key]: true,
+      }),
+      {
+        cid: false,
+        name: false,
+        nameEn: false,
+        dob: false,
+        gender: false,
+        issuer: false,
+        issueDate: false,
+        expireDate: false,
+        address: false,
+        photo: false,
+      }
+    );
 
     const info = {};
     let data;
@@ -51,24 +50,27 @@ class PersonalApplet {
 
     // TH fullname
     if (q.name) {
-      data = await reader.getData(this.card, apduPerson.CMD_THFULLNAME, this.req);
+      data = await reader.getData(
+        this.card,
+        apduPerson.CMD_THFULLNAME,
+        this.req
+      );
       data = legacy.decode(data, 'tis620');
-      data = data
-        .slice(0, -2)
-        .toString()
-        .trim()
-        .split('#'); // prefix, firstname, lastname
+      data = data.slice(0, -2).toString().trim().split('#'); // prefix, firstname, lastname
       const th = {
         prefix: data[0],
         firstname: data[1],
         middlename: data[2],
         lastname: data[3],
-        fullname: data.reduce((name, d) => {
-          if (d.length === 0) {
-            return name;
-          }
-          return `${name} ${d}`;
-        }, '').trim().replace(' ', ''),
+        fullname: data
+          .reduce((name, d) => {
+            if (d.length === 0) {
+              return name;
+            }
+            return `${name} ${d}`;
+          }, '')
+          .trim()
+          .replace(' ', ''),
       };
 
       info.name = th;
@@ -76,24 +78,27 @@ class PersonalApplet {
 
     // EN fullname
     if (q.nameEn) {
-      data = await reader.getData(this.card, apduPerson.CMD_ENFULLNAME, this.req);
+      data = await reader.getData(
+        this.card,
+        apduPerson.CMD_ENFULLNAME,
+        this.req
+      );
       data = legacy.decode(data, 'tis620');
-      data = data
-        .slice(0, -2)
-        .toString()
-        .trim()
-        .split('#'); // prefix, firstname, lastname
+      data = data.slice(0, -2).toString().trim().split('#'); // prefix, firstname, lastname
       const en = {
         prefix: data[0],
         firstname: data[1],
         middlename: data[2],
         lastname: data[3],
-        fullname: data.reduce((name, d) => {
-          if (d.length === 0) {
-            return name;
-          }
-          return `${name} ${d}`;
-        }, '').trim().replace(' ', ''),
+        fullname: data
+          .reduce((name, d) => {
+            if (d.length === 0) {
+              return name;
+            }
+            return `${name} ${d}`;
+          }, '')
+          .trim()
+          .replace(' ', ''),
       };
 
       info.nameEN = en;
@@ -102,21 +107,17 @@ class PersonalApplet {
     // DOB
     if (q.dob) {
       data = await reader.getData(this.card, apduPerson.CMD_BIRTH, this.req);
-      data = data
-        .slice(0, -2)
-        .toString()
-        .trim();
+      data = data.slice(0, -2).toString().trim();
       // info.dob = dayjs(`${+data.slice(0, 4) - 543}-${data.slice(4, 6)}-${data.slice(6)}`).format();
-      info.dob = `${+data.slice(0, 4) - 543}-${data.slice(4, 6)}-${data.slice(6)}`;
+      info.dob = `${+data.slice(0, 4) - 543}-${data.slice(4, 6)}-${data.slice(
+        6
+      )}`;
     }
 
     // Gender
     if (q.gender) {
       data = await reader.getData(this.card, apduPerson.CMD_GENDER, this.req);
-      info.gender = data
-        .slice(0, -2)
-        .toString()
-        .trim();
+      info.gender = data.slice(0, -2).toString().trim();
     }
 
     // Card Issuer
@@ -132,53 +133,54 @@ class PersonalApplet {
     // Issue Date
     if (q.issueDate) {
       data = await reader.getData(this.card, apduPerson.CMD_ISSUE, this.req);
-      data = data
-        .slice(0, -2)
-        .toString()
-        .trim();
+      data = data.slice(0, -2).toString().trim();
       // info.issueDate = dayjs(`${+data.slice(0, 4) - 543}-${data.slice(4, 6)}-${data.slice(6)}`).format();
-      info.issueDate = `${+data.slice(0, 4) - 543}-${data.slice(4, 6)}-${data.slice(6)}`;
+      info.issueDate = `${+data.slice(0, 4) - 543}-${data.slice(
+        4,
+        6
+      )}-${data.slice(6)}`;
     }
 
     // Expire Date
     if (q.expireDate) {
       data = await reader.getData(this.card, apduPerson.CMD_EXPIRE, this.req);
-      data = data
-        .slice(0, -2)
-        .toString()
-        .trim();
+      data = data.slice(0, -2).toString().trim();
       // info.expireDate = dayjs(`${+data.slice(0, 4) - 543}-${data.slice(4, 6)}-${data.slice(6)}`).format();
-      info.expireDate = `${+data.slice(0, 4) - 543}-${data.slice(4, 6)}-${data.slice(6)}`;
+      info.expireDate = `${+data.slice(0, 4) - 543}-${data.slice(
+        4,
+        6
+      )}-${data.slice(6)}`;
     }
 
     // Address
     if (q.address) {
       data = await reader.getData(this.card, apduPerson.CMD_ADDRESS, this.req);
       data = legacy.decode(data, 'tis620');
-      data = data
-        .slice(0, -2)
-        .toString()
-        .trim()
-        .split('#');
-
-      info.address = {
-        houseNo: data[0],
-        moo: (data[1].startsWith('หมู่ที่') ? data[1].substring(7) : '').trim(),
-        soi: (data[1].startsWith('ซอย') ? data[1].substring(3) : '').trim(),
-        street: data
-          .slice(2, -3)
-          .join(' ')
-          .trim(),
-        subdistrict: data[data.length - 3].substring(4).trim(),
-        district: data[data.length-2].substring(0,3)=='เขต' ?  data[data.length-2].substring(3).trim() : data[data.length - 2].substring(5).trim(),
-        province: data[data.length - 1].substring(7).trim(),
-        full: data.reduce((addr, d) => {
-          if (d.length === 0) {
-            return addr;
-          }
-          return `${addr} ${d}`;
-        }, ''),
-      };
+      data = data.slice(0, -2).toString().trim();
+      if (data.length > 0) {
+        data = data.split('#');
+        info.address = {
+          houseNo: data[0],
+          moo: (data[1].startsWith('หมู่ที่')
+            ? data[1].substring(7)
+            : ''
+          ).trim(),
+          soi: (data[1].startsWith('ซอย') ? data[1].substring(3) : '').trim(),
+          street: data.slice(2, -3).join(' ').trim(),
+          subdistrict: data[data.length - 3].substring(4).trim(),
+          district:
+            data[data.length - 2].substring(0, 3) == 'เขต'
+              ? data[data.length - 2].substring(3).trim()
+              : data[data.length - 2].substring(5).trim(),
+          province: data[data.length - 1].substring(7).trim(),
+          full: data.reduce((addr, d) => {
+            if (d.length === 0) {
+              return addr;
+            }
+            return `${addr} ${d}`;
+          }, ''),
+        };
+      }
     }
 
     if (q.photo) {
